@@ -182,9 +182,9 @@ let currentFilter='all',userLat=null,userLng=null;
 let sheetOpen=false;
 
 map=L.map('map').setView([17.4094,104.7783],15);
-L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-  attribution:'© Stadia Maps © OpenStreetMap contributors',
-  maxZoom:20
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:'© OpenStreetMap contributors',
+  maxZoom:19
 }).addTo(map);
 
 function toggleSheet(){
