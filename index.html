@@ -81,22 +81,18 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 .about-section{padding:16px 20px;border-bottom:1px solid #1a3020;}
 .about-section:last-child{border:none;}
 .about-section h3{font-size:13px;font-weight:700;color:#c9a84c;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;}
-.about-dev-card{background:#0a1510;border-radius:12px;padding:14px;border:1px solid #1a3020;}
-.about-dev-name{font-size:15px;font-weight:600;color:#f0d080;margin-bottom:4px;}
-.about-dev-role{font-size:12px;color:#52b788;}
 .about-placeholder{background:#0a1510;border:1px dashed #2a4a2a;border-radius:12px;padding:20px;text-align:center;color:#3a6a3a;font-size:13px;}
 .about-placeholder span{display:block;font-size:24px;margin-bottom:8px;}
 .sponsor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .sponsor-card{background:#0a1510;border:1px dashed #2a4a2a;border-radius:10px;padding:16px;text-align:center;color:#3a6a3a;font-size:12px;}
 .sponsor-card span{display:block;font-size:20px;margin-bottom:6px;}
-.about-app-info{display:flex;flex-direction:column;gap:8px;}
-.about-info-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+.about-info-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;}
 .about-info-label{color:#52b788;}
 .about-info-value{color:#e8e8e8;font-weight:600;}
-.about-version{text-align:center;padding:16px 20px 0;font-size:11px;color:#2a4a2a;}
 
-/* Photo in popup */
-.popup-photo{width:100%;height:120px;border-radius:8px;object-fit:cover;margin-bottom:10px;background:#1a3020;display:flex;align-items:center;justify-content:center;color:#3a6a3a;font-size:12px;border:1px dashed #2a4a2a;}
+/* Search Modal */
+#search-modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.7);align-items:flex-end;}
+#search-modal.show{display:flex;}
 </style>
 </head>
 <body>
@@ -163,14 +159,17 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 </div>
 
 <!-- Search Modal -->
-<div id="search-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.7);align-items:flex-end;" onclick="closeSearchOutside(event)">
+<div id="search-modal" onclick="closeSearchOutside(event)">
   <div style="background:#0d1a12;border-radius:20px 20px 0 0;border-top:2px solid #c9a84c;width:100%;max-height:85vh;display:flex;flex-direction:column;">
     <div style="padding:16px 20px 12px;border-bottom:1px solid #1a3020;">
-      <div style="font-size:16px;font-weight:700;color:#f0d080;margin-bottom:12px;">🔍 ค้นหาห้องน้ำ</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:16px;font-weight:700;color:#f0d080;">🔍 ค้นหาห้องน้ำ</div>
+        <button onclick="closeSearch()" style="background:#1a3020;border:none;border-radius:8px;padding:6px 12px;color:#c9a84c;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;">✕ ปิด</button>
+      </div>
       <div style="display:flex;gap:8px;align-items:center;background:#0a1510;border:1.5px solid #c9a84c;border-radius:12px;padding:8px 14px;">
         <svg width="16" height="16" fill="none" stroke="#c9a84c" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <input id="search-input" type="text" placeholder="พิมพ์ชื่อห้องน้ำหรือสถานที่..." oninput="doSearch()" style="background:transparent;border:none;outline:none;color:#f0f0f0;font-size:14px;font-family:'Sarabun',sans-serif;flex:1;"/>
-        <button onclick="clearSearch()" style="background:transparent;border:none;color:#c9a84c;font-size:18px;cursor:pointer;padding:0;line-height:1;">×</button>
+        <button onclick="clearSearch()" style="background:transparent;border:none;color:#c9a84c;font-size:20px;cursor:pointer;padding:0;line-height:1;">×</button>
       </div>
     </div>
     <div id="search-results" style="overflow-y:auto;flex:1;padding:8px 0;"></div>
@@ -184,45 +183,21 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
       <h2>🐍 เกี่ยวกับแอปนี้</h2>
       <button id="about-close" onclick="closeAbout()">×</button>
     </div>
-
     <div class="about-section">
       <h3>ข้อมูลแอปพลิเคชัน</h3>
-      <div class="about-app-info">
-        <div class="about-info-row">
-          <span class="about-info-label">ชื่อแอป</span>
-          <span class="about-info-value">ห้องน้ำนครพนม</span>
-        </div>
-        <div class="about-info-row">
-          <span class="about-info-label">งาน</span>
-          <span class="about-info-value">บวงสรวงพญาศรีสัตตนาคราช</span>
-        </div>
-        <div class="about-info-row">
-          <span class="about-info-label">จังหวัด</span>
-          <span class="about-info-value">นครพนม</span>
-        </div>
-        <div class="about-info-row">
-          <span class="about-info-label">วัตถุประสงค์</span>
-          <span class="about-info-value">บริการสาธารณะ</span>
-        </div>
-      </div>
+      <div class="about-info-row"><span class="about-info-label">ชื่อแอป</span><span class="about-info-value">ห้องน้ำนครพนม</span></div>
+      <div class="about-info-row"><span class="about-info-label">งาน</span><span class="about-info-value">บวงสรวงพญาศรีสัตตนาคราช</span></div>
+      <div class="about-info-row"><span class="about-info-label">จังหวัด</span><span class="about-info-value">นครพนม</span></div>
+      <div class="about-info-row"><span class="about-info-label">วัตถุประสงค์</span><span class="about-info-value">บริการสาธารณะ</span></div>
     </div>
-
     <div class="about-section">
       <h3>ผู้พัฒนา</h3>
-      <div class="about-placeholder">
-        <span>👨‍💻</span>
-        กำลังอัปเดตข้อมูลผู้พัฒนา
-      </div>
+      <div class="about-placeholder"><span>👨‍💻</span>กำลังอัปเดตข้อมูลผู้พัฒนา</div>
     </div>
-
     <div class="about-section">
       <h3>หน่วยงาน</h3>
-      <div class="about-placeholder">
-        <span>🏛️</span>
-        กำลังอัปเดตข้อมูลหน่วยงาน
-      </div>
+      <div class="about-placeholder"><span>🏛️</span>กำลังอัปเดตข้อมูลหน่วยงาน</div>
     </div>
-
     <div class="about-section">
       <h3>ผู้สนับสนุน</h3>
       <div class="sponsor-grid">
@@ -232,17 +207,14 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
         <div class="sponsor-card"><span>🏢</span>สปอนเซอร์ 4</div>
       </div>
     </div>
-
-    <div class="about-version">
-      ห้องน้ำนครพนม v1.0 · พัฒนาเพื่อประชาชน
-    </div>
+    <div style="text-align:center;padding:16px 20px 0;font-size:11px;color:#2a4a2a;">ห้องน้ำนครพนม v1.0 · พัฒนาเพื่อประชาชน</div>
   </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 <script>
-const LONGDO_KEY = 'ใส่ KEY ของคุณตรงนี้';
+const LONGDO_KEY='ใส่ KEY ของคุณตรงนี้';
 const TOILETS=[
   {id:1,name:"ห้องน้ำลานพญาศรีสัตตนาคราช",lat:17.4094,lng:104.7783,type:"สาธารณะ",free:true,open24:true,disabled:true,hours:"24 ชม.",rooms:"ชาย 4 · หญิง 4",photo:null},
   {id:2,name:"ห้องน้ำเทศบาลหน้าเมือง",lat:17.4112,lng:104.7795,type:"สาธารณะ",free:true,open24:false,disabled:false,hours:"06:00–22:00",rooms:"ชาย 3 · หญิง 3",photo:null},
@@ -256,18 +228,15 @@ let currentFilter='all',userLat=null,userLng=null,sheetOpen=false;
 
 map=L.map('map',{zoomControl:true}).setView([17.4094,104.7783],15);
 L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LONGDO_KEY}&proj=epsg3857&HD=1`,{
-  attribution:'© Longdo Map © OpenStreetMap contributors',
-  maxZoom:20
+  attribution:'© Longdo Map © OpenStreetMap',maxZoom:20
 }).addTo(map);
 
-// GPS อัตโนมัติตอนเปิดแอพ
 function autoLocate(){
   if(!navigator.geolocation)return;
   navigator.geolocation.getCurrentPosition(pos=>{
-    userLat=pos.coords.latitude;
-    userLng=pos.coords.longitude;
+    userLat=pos.coords.latitude;userLng=pos.coords.longitude;
     setUserPosition(userLat,userLng);
-  },()=>{/* ถ้าไม่อนุญาตก็แสดงแผนที่ปกติ */});
+  },()=>{});
 }
 
 function setUserPosition(lat,lng){
@@ -277,11 +246,8 @@ function setUserPosition(lat,lng){
     className:'',
     html:`<div style="width:16px;height:16px;background:#c9a84c;border:3px solid #0d1117;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.3)"></div>`,
     iconSize:[16,16],iconAnchor:[8,8]
-  })}).addTo(map).bindPopup('<span style="font-family:Sarabun;color:#f0d080;font-size:13px">📍 ตำแหน่งของคุณ</span>');
-  radiusCircle=L.circle([lat,lng],{
-    radius:500,color:'#c9a84c',fillColor:'#c9a84c',
-    fillOpacity:0.07,weight:2,dashArray:'6,5'
-  }).addTo(map);
+  })}).addTo(map);
+  radiusCircle=L.circle([lat,lng],{radius:500,color:'#c9a84c',fillColor:'#c9a84c',fillOpacity:0.07,weight:2,dashArray:'6,5'}).addTo(map);
   map.setView([lat,lng],16);
   renderAll();
 }
@@ -298,26 +264,34 @@ function getIcon(t,nearest){
   });
 }
 
+// ไอคอนจรวดกระดาษ SVG สมส่วน
+const SHARE_ICON=`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
+
 function getPopup(t,dist){
   const ds=dist!==null?(dist<1000?`${Math.round(dist)} ม.`:`${(dist/1000).toFixed(1)} กม.`):'';
   const canNav=userLat!==null;
   const photoHTML=t.photo
     ?`<img src="${t.photo}" style="width:100%;height:120px;border-radius:8px;object-fit:cover;margin-bottom:10px;" alt="${t.name}"/>`
-    :`<div style="width:100%;height:100px;border-radius:8px;background:#1a3020;border:1px dashed #2a4a2a;display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex-direction:column;gap:4px"><span style="font-size:24px">📷</span><span style="font-size:11px;color:#3a6a3a">ยังไม่มีรูปภาพ</span></div>`;
+    :`<div style="width:100%;height:90px;border-radius:8px;background:#1a3020;border:1px dashed #2a4a2a;display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex-direction:column;gap:4px"><span style="font-size:22px">📷</span><span style="font-size:11px;color:#3a6a3a">ยังไม่มีรูปภาพ</span></div>`;
+
+  const btnShare=`<button onclick="shareToilet(${t.id})" style="width:44px;height:44px;background:#0a1510;border:1.5px solid #c9a84c;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">${SHARE_ICON}</button>`;
+  const btnNav=`<button onclick="startRoute(${t.lat},${t.lng},'${t.name}')" style="flex:1;height:44px;background:linear-gradient(135deg,#c9a84c,#e8c56a);border:none;border-radius:10px;font-size:13px;font-weight:700;color:#0a1f12;cursor:pointer;font-family:'Sarabun',sans-serif;">🧭 นำทาง</button>`;
+  const btnShareOnly=`<button onclick="shareToilet(${t.id})" style="width:44px;height:44px;background:#0a1510;border:1.5px solid #c9a84c;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">${SHARE_ICON}</button>`;
+
   return `<div style="font-family:'Sarabun',sans-serif;min-width:210px;">
     ${photoHTML}
     <div style="font-size:15px;font-weight:700;color:#f0d080;margin-bottom:4px;">${t.name}</div>
     <div style="font-size:12px;color:#52b788;margin-bottom:${ds?'4px':'8px'}">${t.type} · ${t.hours} · ${t.rooms}</div>
     ${ds?`<div style="font-size:13px;font-weight:700;color:#c9a84c;margin-bottom:8px;">📍 ${ds} จากคุณ</div>`:''}
-    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:${canNav?'12px':'4px'}">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
       <span style="background:${t.free?'#0d2a14':'#2a0f08'};color:${t.free?'#52b788':'#e07050'};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid ${t.free?'#1a5c30':'#5c2010'}">${t.free?'ฟรี':'มีค่าใช้จ่าย'}</span>
       ${t.open24?'<span style="background:#1a1408;color:#c9a84c;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #3a2a10">24 ชม.</span>':''}
       ${t.disabled?'<span style="background:#08142a;color:#5090d0;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #103060">ผู้พิการ</span>':''}
     </div>
-    ${canNav
-      ?`<button onclick="startRoute(${t.lat},${t.lng},'${t.name}')" style="width:100%;background:linear-gradient(135deg,#c9a84c,#e8c56a);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;color:#0a1f12;cursor:pointer;font-family:'Sarabun',sans-serif;">🧭 นำทางมาที่นี่</button>`
-      :'<div style="font-size:11px;color:#4a6a4a;text-align:center;padding:4px 0;">เปิดแอพแล้วจะนำทางได้อัตโนมัติ</div>'
-    }
+    <div style="display:flex;gap:8px;align-items:center;">
+      ${canNav?btnNav:`<div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#4a6a4a;background:#0a1510;border-radius:10px;border:1px solid #1a3020;">เปิดแอพแล้วนำทางได้</div>`}
+      ${canNav?btnShare:btnShareOnly}
+    </div>
   </div>`;
 }
 
@@ -351,9 +325,7 @@ function renderAll(){
     const near=list.filter(t=>t.dist<=500),far=list.filter(t=>t.dist>500);
     if(near.length>0){el.innerHTML+=`<div class="sec-div near-div">📍 ในรัศมี 500 เมตร — ${near.length} แห่ง</div>`;near.forEach(t=>el.innerHTML+=makeItem(t,true));}
     if(far.length>0){el.innerHTML+=`<div class="sec-div far-div">ไกลกว่า 500 เมตร — ${far.length} แห่ง</div>`;far.forEach(t=>el.innerHTML+=makeItem(t,false));}
-  } else {
-    list.forEach(t=>el.innerHTML+=makeItem(t,false));
-  }
+  } else {list.forEach(t=>el.innerHTML+=makeItem(t,false));}
 }
 
 function makeItem(t,nearby){
@@ -387,13 +359,8 @@ function startRoute(toLat,toLng,name){
   routeControl=L.Routing.control({
     waypoints:[L.latLng(userLat,userLng),L.latLng(toLat,toLng)],
     router:L.Routing.osrmv1({serviceUrl:'https://router.project-osrm.org/route/v1'}),
-    lineOptions:{styles:[
-      {color:'#000',weight:10,opacity:0.2},
-      {color:'#4A90D9',weight:6,opacity:1},
-      {color:'#fff',weight:2,opacity:0.3,dashArray:'1,10'}
-    ]},
-    createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,
-    fitSelectedRoutes:true,showAlternatives:false
+    lineOptions:{styles:[{color:'#000',weight:10,opacity:0.2},{color:'#4A90D9',weight:6,opacity:1},{color:'#fff',weight:2,opacity:0.3,dashArray:'1,10'}]},
+    createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,fitSelectedRoutes:true,showAlternatives:false
   }).addTo(map);
   routeControl.on('routesfound',e=>{
     const r=e.routes[0].summary;
@@ -408,52 +375,32 @@ function cancelRoute(){
   document.getElementById('route-bar').classList.remove('show');
 }
 
+function shareToilet(id){
+  const t=TOILETS.find(x=>x.id===id);
+  if(!t)return;
+  const url=`${window.location.origin}${window.location.pathname}?id=${id}`;
+  if(navigator.share){
+    navigator.share({title:`ห้องน้ำนครพนม — ${t.name}`,text:`📍 ${t.name}\n${t.type} · ${t.hours} · ${t.free?'ฟรี':'มีค่าใช้จ่าย'}\nงานบวงสรวงพญาศรีสัตตนาคราช`,url:url});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>alert('คัดลอกลิงก์แล้ว!\n'+url));
+  }
+}
+
 function toggleSheet(){
   sheetOpen=!sheetOpen;
   document.getElementById('bottom-sheet').classList.toggle('open',sheetOpen);
   document.getElementById('sheet-title').textContent=sheetOpen?'รายการห้องน้ำ':'ลากขึ้นเพื่อดูรายการ';
-  const listTab=document.getElementById('list-tab');
-  if(sheetOpen)listTab.classList.add('active');
-  else listTab.classList.remove('active');
+  document.getElementById('list-tab').classList.toggle('active',sheetOpen);
 }
 function openSheet(){sheetOpen=true;document.getElementById('bottom-sheet').classList.add('open');document.getElementById('sheet-title').textContent='รายการห้องน้ำ';document.getElementById('list-tab').classList.add('active');}
 function closeSheet(){sheetOpen=false;document.getElementById('bottom-sheet').classList.remove('open');document.getElementById('sheet-title').textContent='ลากขึ้นเพื่อดูรายการ';document.getElementById('list-tab').classList.remove('active');}
-
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderAll();}
-function openFilter(){document.getElementById('filter-bar').scrollIntoView({behavior:'smooth'});}
+function tabMap(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');closeSheet();setTimeout(()=>map.invalidateSize(),100);}
+function tabList(el){if(sheetOpen){closeSheet();document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));document.querySelector('.tab-item:first-child').classList.add('active');}else{document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');openSheet();}setTimeout(()=>map.invalidateSize(),100);}
 
-function tabMap(el){
-  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  closeSheet();
-  setTimeout(()=>map.invalidateSize(),100);
-}
-
-function tabList(el){
-  if(sheetOpen){
-    closeSheet();
-    document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-    document.querySelector('.tab-item:first-child').classList.add('active');
-  } else {
-    document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-    el.classList.add('active');
-    openSheet();
-  }
-  setTimeout(()=>map.invalidateSize(),100);
-}
-
-// ปุ่มใกล้ฉัน = กลับจุดปัจจุบัน
 function locateMe(){
-  const circle=document.getElementById('locate-circle');
-  const label=document.getElementById('locate-label');
-  if(userLat!==null){
-    // มีตำแหน่งแล้ว กลับมาจุดปัจจุบัน
-    map.setView([userLat,userLng],16);
-    circle.style.transform='scale(0.9)';
-    setTimeout(()=>circle.style.transform='scale(1)',200);
-    return;
-  }
-  // ยังไม่มีตำแหน่ง ขอ GPS
+  const circle=document.getElementById('locate-circle'),label=document.getElementById('locate-label');
+  if(userLat!==null){map.setView([userLat,userLng],16);circle.style.transform='scale(0.9)';setTimeout(()=>circle.style.transform='scale(1)',200);return;}
   circle.textContent='⏳';circle.classList.add('loading');label.textContent='กำลังหา...';
   if(!navigator.geolocation){alert('เบราว์เซอร์ไม่รองรับ GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';return;}
   navigator.geolocation.getCurrentPosition(pos=>{
@@ -461,66 +408,44 @@ function locateMe(){
     setUserPosition(userLat,userLng);
     circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';
     openSheet();
-  },()=>{
-    alert('ไม่สามารถหาตำแหน่งได้\nกรุณาอนุญาต GPS');
-    circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';
-  });
+  },()=>{alert('ไม่สามารถหาตำแหน่งได้\nกรุณาอนุญาต GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';});
 }
 
-function openSearch(){
-  document.getElementById('search-modal').style.display='flex';
-  setTimeout(()=>document.getElementById('search-input').focus(),100);
-  doSearch();
-}
+function openSearch(){document.getElementById('search-modal').style.display='flex';setTimeout(()=>document.getElementById('search-input').focus(),100);doSearch();}
 function closeSearch(){document.getElementById('search-modal').style.display='none';}
 function closeSearchOutside(e){if(e.target===document.getElementById('search-modal'))closeSearch();}
 function clearSearch(){document.getElementById('search-input').value='';doSearch();document.getElementById('search-input').focus();}
-
 function doSearch(){
   const q=document.getElementById('search-input').value.trim().toLowerCase();
   const results=document.getElementById('search-results');
-  const list=TOILETS.filter(t=>
-    q===''||
-    t.name.toLowerCase().includes(q)||
-    t.type.toLowerCase().includes(q)
-  ).map(t=>({...t,dist:userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null}))
-  .sort((a,b)=>a.dist===null?0:a.dist-b.dist);
-
-  if(list.length===0){
-    results.innerHTML='<div style="text-align:center;padding:30px;color:#3a6a3a;font-size:14px;">ไม่พบห้องน้ำที่ค้นหา</div>';
-    return;
-  }
-
+  const list=TOILETS.filter(t=>q===''||t.name.toLowerCase().includes(q)||t.type.toLowerCase().includes(q))
+    .map(t=>({...t,dist:userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null}))
+    .sort((a,b)=>a.dist===null?0:a.dist-b.dist);
+  if(list.length===0){results.innerHTML='<div style="text-align:center;padding:30px;color:#3a6a3a;font-size:14px;">ไม่พบห้องน้ำที่ค้นหา</div>';return;}
   results.innerHTML=list.map(t=>{
     const ds=t.dist!==null?(t.dist<1000?`${Math.round(t.dist)} ม.`:`${(t.dist/1000).toFixed(1)} กม.`):'';
-    return `<div onclick="goToToilet(${t.lat},${t.lng})" style="padding:12px 20px;border-bottom:1px solid #141e14;display:flex;align-items:center;gap:12px;cursor:pointer;background:#0d1a12;" onmouseenter="this.style.background='#111e14'" onmouseleave="this.style.background='#0d1a12'">
+    return `<div onclick="goToToilet(${t.lat},${t.lng})" style="padding:12px 20px;border-bottom:1px solid #141e14;display:flex;align-items:center;gap:12px;cursor:pointer;">
       <div style="width:38px;height:38px;border-radius:10px;background:${t.free?'#0d2a14':'#2a0f08'};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🚻</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:600;color:#e8e8e8;">${t.name}</div>
         <div style="font-size:11px;color:#52b788;margin-top:1px;">${t.type} · ${t.hours}</div>
-        <div style="display:flex;gap:4px;margin-top:4px;">
-          <span style="background:${t.free?'#0d2a14':'#2a0f08'};color:${t.free?'#52b788':'#e07050'};padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600;">${t.free?'ฟรี':'มีค่าใช้จ่าย'}</span>
-          ${t.open24?'<span style="background:#1a1408;color:#c9a84c;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600;">24 ชม.</span>':''}
-          ${t.disabled?'<span style="background:#08142a;color:#5090d0;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600;">ผู้พิการ</span>':''}
-        </div>
       </div>
       ${ds?`<div style="font-size:12px;font-weight:700;color:#c9a84c;white-space:nowrap;">${ds}</div>`:''}
     </div>`;
   }).join('');
 }
-
-function goToToilet(lat,lng){
-  closeSearch();
-  map.setView([lat,lng],17);
-  markers.forEach(m=>{if(Math.abs(m.getLatLng().lat-lat)<0.0001)m.openPopup();});
-}
+function goToToilet(lat,lng){closeSearch();map.setView([lat,lng],17);markers.forEach(m=>{if(Math.abs(m.getLatLng().lat-lat)<0.0001)m.openPopup();});}
 
 function openAbout(){document.getElementById('about-modal').classList.add('show');}
 function closeAbout(){document.getElementById('about-modal').classList.remove('show');}
 function closeAboutOutside(e){if(e.target===document.getElementById('about-modal'))closeAbout();}
 
+function openFilter(){document.getElementById('filter-bar').scrollIntoView({behavior:'smooth'});}
+
 renderAll();
-// GPS อัตโนมัติตอนเปิดแอพ
+const urlParams=new URLSearchParams(window.location.search);
+const deepId=urlParams.get('id');
+if(deepId){const t=TOILETS.find(x=>x.id===parseInt(deepId));if(t){setTimeout(()=>{map.setView([t.lat,t.lng],17);markers.forEach(m=>{if(Math.abs(m.getLatLng().lat-t.lat)<0.0001)m.openPopup();});},800);}}
 setTimeout(()=>autoLocate(),500);
 </script>
 </body>
