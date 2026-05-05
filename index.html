@@ -384,7 +384,7 @@ function shareToilet(id){
     text:`📍 ${t.name}\n${t.type} · ${t.hours} · ${t.free?'ฟรี':'มีค่าใช้จ่าย'}\nงานบวงสรวงพญาศรีสัตตนาคราช`,
     url:url
   };
-  if(navigator.canShare&&navigator.canShare(shareData)){
+  if(navigator.share){
     navigator.share(shareData).catch(err=>console.log('Share cancelled',err));
   } else {
     navigator.clipboard.writeText(url).then(()=>alert('คัดลอกลิงก์แล้ว!\n'+url));
