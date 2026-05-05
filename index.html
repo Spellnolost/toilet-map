@@ -5,35 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>ห้องน้ำนครพนม</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
-
 #header{background:linear-gradient(135deg,#0a1f12 0%,#0f2d1a 100%);padding:12px 16px 10px;border-bottom:2px solid #c9a84c;flex-shrink:0;z-index:1000;}
 #header-inner{display:flex;align-items:center;gap:10px;}
 #header-icon{width:40px;height:40px;background:linear-gradient(135deg,#c9a84c,#e8c56a);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 12px rgba(201,168,76,0.5);}
 #header-title{font-size:18px;font-weight:700;color:#f0d080;letter-spacing:0.3px;}
 #header-sub{font-size:10px;color:#52b788;margin-top:1px;}
-
 #filter-bar{background:#0a1510;padding:8px 12px;display:flex;gap:7px;overflow-x:auto;border-bottom:1px solid #1a3020;flex-shrink:0;z-index:1000;}
 #filter-bar::-webkit-scrollbar{display:none;}
 .chip{background:transparent;border:1px solid #c9a84c;border-radius:20px;padding:5px 14px;font-size:12px;color:#c9a84c;white-space:nowrap;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:500;}
 .chip.active{background:#c9a84c;color:#0a1f12;font-weight:700;}
-
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
 #map{flex:1;width:100%;}
-
-.maplibregl-popup-content{background:#0f2418!important;border:1.5px solid #c9a84c!important;border-radius:14px!important;padding:14px 16px!important;box-shadow:0 8px 32px rgba(0,0,0,0.5)!important;min-width:210px!important;}
-.maplibregl-popup-close-button{color:#c9a84c!important;font-size:18px!important;right:8px!important;top:6px!important;}
-.maplibregl-popup-tip{border-top-color:#c9a84c!important;border-bottom-color:#c9a84c!important;}
-
-#route-bar{display:none;position:absolute;top:10px;left:10px;right:10px;z-index:900;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:10px 14px;flex-direction:row;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+.leaflet-control-attribution{font-size:8px!important;opacity:0.3!important;top:6px!important;right:6px!important;bottom:auto!important;}
+.leaflet-routing-container{display:none!important;}
+.leaflet-popup-content-wrapper{background:#0f2418!important;border:1.5px solid #c9a84c!important;border-radius:14px!important;color:#f0f0f0!important;box-shadow:0 8px 32px rgba(0,0,0,0.5)!important;}
+.leaflet-popup-tip{background:#c9a84c!important;}
+.leaflet-popup-close-button{color:#c9a84c!important;font-size:18px!important;}
+#route-bar{display:none;position:absolute;top:10px;left:10px;right:10px;z-index:900;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:10px 14px;flex-direction:row;align-items:center;gap:10px;}
 #route-bar.show{display:flex;}
 #route-name{font-size:13px;font-weight:700;color:#f0d080;}
 #route-detail{font-size:11px;color:#52b788;margin-top:2px;}
 #route-cancel{background:#2a0f08;border:none;border-radius:8px;padding:7px 12px;font-size:12px;color:#e07050;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;white-space:nowrap;flex-shrink:0;}
-
 #bottom-sheet{position:absolute;bottom:0;left:0;right:0;z-index:800;background:#0d1a12;border-radius:18px 18px 0 0;border-top:2px solid #c9a84c;transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);transform:translateY(calc(100% - 56px));max-height:75vh;display:flex;flex-direction:column;}
 #bottom-sheet.open{transform:translateY(0);}
 #sheet-handle-area{padding:10px 16px 6px;cursor:pointer;flex-shrink:0;}
@@ -44,11 +41,9 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 #sheet-content{overflow-y:auto;flex:1;}
 #sheet-content::-webkit-scrollbar{width:3px;}
 #sheet-content::-webkit-scrollbar-thumb{background:#c9a84c;border-radius:2px;}
-
 .sec-div{padding:6px 16px;font-size:10px;font-weight:700;letter-spacing:0.5px;border-bottom:1px solid #1a2e1a;}
 .sec-div.near-div{color:#c9a84c;background:#0a1e10;}
 .sec-div.far-div{color:#4a7a5a;background:#0a1510;}
-
 .toilet-item{padding:11px 16px;border-bottom:1px solid #141e14;display:flex;align-items:center;gap:10px;cursor:pointer;background:#0d1a12;}
 .toilet-item:active{background:#111e14;}
 .toilet-item.nearby{border-left:3px solid #c9a84c;}
@@ -67,7 +62,6 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 .ti-dist{font-size:12px;font-weight:700;white-space:nowrap;margin-left:auto;padding-left:8px;}
 .ti-dist.near{color:#c9a84c;}
 .ti-dist.far{color:#3a5a3a;}
-
 #tab-bar{background:#0a1510;border-top:1.5px solid #1a3020;display:flex;align-items:flex-end;padding:0 0 8px;flex-shrink:0;position:relative;z-index:1000;}
 .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 0;cursor:pointer;font-size:10px;color:#3a6a3a;}
 .tab-item.active{color:#52b788;}
@@ -79,7 +73,6 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 </style>
 </head>
 <body>
-
 <div id="header">
   <div id="header-inner">
     <div id="header-icon">🚻</div>
@@ -89,14 +82,12 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
     </div>
   </div>
 </div>
-
 <div id="filter-bar">
   <button class="chip active" onclick="setFilter('all',this)">ทั้งหมด</button>
   <button class="chip" onclick="setFilter('free',this)">ฟรี</button>
   <button class="chip" onclick="setFilter('open24',this)">เปิด 24 ชม.</button>
   <button class="chip" onclick="setFilter('disabled',this)">ผู้พิการ</button>
 </div>
-
 <div id="main">
   <div id="map"></div>
   <div id="route-bar">
@@ -114,12 +105,9 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
         <b id="count-label">5 แห่ง</b>
       </div>
     </div>
-    <div id="sheet-content">
-      <div id="toilet-list"></div>
-    </div>
+    <div id="sheet-content"><div id="toilet-list"></div></div>
   </div>
 </div>
-
 <div id="tab-bar">
   <div class="tab-item active" onclick="tabMap(this)">
     <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
@@ -143,7 +131,8 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
   </div>
 </div>
 
-<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 <script>
 const TOILETS=[
   {id:1,name:"ห้องน้ำลานพญาศรีสัตตนาคราช",lat:17.4094,lng:104.7783,type:"สาธารณะ",free:true,open24:true,disabled:true,hours:"24 ชม.",rooms:"ชาย 4 · หญิง 4"},
@@ -153,54 +142,35 @@ const TOILETS=[
   {id:5,name:"ห้องน้ำสวนสาธารณะเฉลิมพระเกียรติ",lat:17.4038,lng:104.7731,type:"สวนสาธารณะ",free:true,open24:false,disabled:true,hours:"05:00–21:00",rooms:"ชาย 3 · หญิง 3"},
 ];
 
-let map,userMarker,markers=[],routeAdded=false;
+let map,userMarker,radiusCircle,routeControl,markers=[];
 let currentFilter='all',userLat=null,userLng=null,sheetOpen=false;
 
-map=new maplibregl.Map({
-  container:'map',
-  style:{
-    version:8,
-    sources:{
-      'dark':{
-        type:'raster',
-        tiles:['https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'],
-        tileSize:256,
-        attribution:'© Stadia Maps © OpenStreetMap'
-      }
-    },
-    layers:[{id:'dark-layer',type:'raster',source:'dark'}]
-  },
-  center:[104.7783,17.4094],
-  zoom:14,
-  dragRotate:false,
-  pitchWithRotate:false,
-  attributionControl:false
-});
+map=L.map('map',{zoomControl:true}).setView([17.4094,104.7783],15);
+L.tileLayer('https://basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png',{
+  attribution:'© OpenStreetMap contributors © CARTO',
+  maxZoom:19
+}).addTo(map);
 
-map.addControl(new maplibregl.AttributionControl({compact:true}),'bottom-right');
-map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-left');
-
-function createPin(t,isNearest){
-  const el=document.createElement('div');
+function getIcon(t,nearest){
   const bg=t.free?'#1a5c30':'#8b2500';
-  const border=isNearest?'#c9a84c':'rgba(255,255,255,0.8)';
-  const size=isNearest?'42px':'36px';
-  const shadow=isNearest?'0 0 0 4px rgba(201,168,76,0.25), 0 3px 12px rgba(0,0,0,0.5)':'0 2px 8px rgba(0,0,0,0.5)';
-  el.style.cssText=`width:${size};height:${size};background:${bg};border:2.5px solid ${border};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:${shadow};cursor:pointer;transition:transform 0.15s;`;
-  el.innerHTML='🚻';
-  el.onmouseenter=()=>el.style.transform='scale(1.15)';
-  el.onmouseleave=()=>el.style.transform='scale(1)';
-  return el;
+  const border=nearest?'#c9a84c':'rgba(255,255,255,0.7)';
+  const size=nearest?40:34;
+  const glow=nearest?'0 0 0 4px rgba(201,168,76,0.25),':'';
+  return L.divIcon({
+    className:'',
+    html:`<div style="width:${size}px;height:${size}px;background:${bg};border:2.5px solid ${border};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:${glow}0 3px 10px rgba(0,0,0,0.6)">🚻</div>`,
+    iconSize:[size,size],iconAnchor:[size/2,size/2]
+  });
 }
 
-function getPopupHTML(t,dist){
+function getPopup(t,dist){
   const ds=dist!==null?(dist<1000?`${Math.round(dist)} ม.`:`${(dist/1000).toFixed(1)} กม.`):'';
   const canNav=userLat!==null;
-  return `<div style="font-family:'Sarabun',sans-serif;">
-    <div style="font-size:15px;font-weight:700;color:#f0d080;margin-bottom:4px;padding-right:16px;">${t.name}</div>
+  return `<div style="font-family:'Sarabun',sans-serif;min-width:200px;">
+    <div style="font-size:15px;font-weight:700;color:#f0d080;margin-bottom:4px;">${t.name}</div>
     <div style="font-size:12px;color:#52b788;margin-bottom:${ds?'4px':'8px'}">${t.type} · ${t.hours} · ${t.rooms}</div>
     ${ds?`<div style="font-size:13px;font-weight:700;color:#c9a84c;margin-bottom:8px;">📍 ${ds} จากคุณ</div>`:''}
-    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:${canNav?'12px':'0'}">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:${canNav?'12px':'4px'}">
       <span style="background:${t.free?'#0d2a14':'#2a0f08'};color:${t.free?'#52b788':'#e07050'};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid ${t.free?'#1a5c30':'#5c2010'}">${t.free?'ฟรี':'มีค่าใช้จ่าย'}</span>
       ${t.open24?'<span style="background:#1a1408;color:#c9a84c;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #3a2a10">24 ชม.</span>':''}
       ${t.disabled?'<span style="background:#08142a;color:#5090d0;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid #103060">ผู้พิการ</span>':''}
@@ -229,32 +199,25 @@ function filterToilets(){
 }
 
 function renderAll(){
-  markers.forEach(m=>m.remove());
-  markers=[];
+  markers.forEach(m=>map.removeLayer(m));markers=[];
   const list=filterToilets();
   document.getElementById('count-label').textContent=`${list.length} แห่ง`;
   list.forEach((t,i)=>{
-    const el=createPin(t,i===0&&userLat!==null);
-    const popup=new maplibregl.Popup({closeButton:true,maxWidth:'260px',offset:22})
-      .setHTML(getPopupHTML(t,t.dist));
-    const m=new maplibregl.Marker({element:el}).setLngLat([t.lng,t.lat]).setPopup(popup).addTo(map);
+    const m=L.marker([t.lat,t.lng],{icon:getIcon(t,i===0&&userLat!==null)})
+      .addTo(map).bindPopup(getPopup(t,t.dist),{maxWidth:260});
     markers.push(m);
   });
-  const el=document.getElementById('toilet-list');
-  el.innerHTML='';
+  const el=document.getElementById('toilet-list');el.innerHTML='';
   if(userLat!==null){
-    const near=list.filter(t=>t.dist<=500);
-    const far=list.filter(t=>t.dist>500);
+    const near=list.filter(t=>t.dist<=500),far=list.filter(t=>t.dist>500);
     if(near.length>0){el.innerHTML+=`<div class="sec-div near-div">📍 ในรัศมี 500 เมตร — ${near.length} แห่ง</div>`;near.forEach(t=>el.innerHTML+=makeItem(t,true));}
     if(far.length>0){el.innerHTML+=`<div class="sec-div far-div">ไกลกว่า 500 เมตร — ${far.length} แห่ง</div>`;far.forEach(t=>el.innerHTML+=makeItem(t,false));}
-  } else {
-    list.forEach(t=>el.innerHTML+=makeItem(t,false));
-  }
+  } else {list.forEach(t=>el.innerHTML+=makeItem(t,false));}
 }
 
 function makeItem(t,nearby){
   const ds=t.dist!==null?(t.dist<1000?`${Math.round(t.dist)} ม.`:`${(t.dist/1000).toFixed(1)} กม.`):'';
-  return `<div class="toilet-item ${nearby?'nearby':'far'}" onclick="focusToilet(${t.lng},${t.lat})">
+  return `<div class="toilet-item ${nearby?'nearby':'far'}" onclick="focusToilet(${t.lat},${t.lng})">
     <div class="ti-icon ${t.free?'free':'paid'}">🚻</div>
     <div style="flex:1;min-width:0">
       <div class="ti-name">${t.name}</div>
@@ -269,38 +232,34 @@ function makeItem(t,nearby){
   </div>`;
 }
 
-function focusToilet(lng,lat){
-  closeSheet();
-  map.flyTo({center:[lng,lat],zoom:17,duration:800});
-  setTimeout(()=>{markers.forEach(m=>{if(Math.abs(m.getLngLat().lat-lat)<0.0001)m.togglePopup();});},900);
+function focusToilet(lat,lng){
+  closeSheet();map.setView([lat,lng],17);
+  markers.forEach(m=>{if(Math.abs(m.getLatLng().lat-lat)<0.0001)m.openPopup();});
 }
 
 function startRoute(toLat,toLng,name){
-  if(routeAdded&&map.getSource('route')){map.removeLayer('route-line-bg');map.removeLayer('route-line');map.removeSource('route');routeAdded=false;}
+  map.closePopup();closeSheet();
+  if(routeControl)map.removeControl(routeControl);
   document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
   document.getElementById('route-detail').textContent='กำลังคำนวณเส้นทาง...';
   document.getElementById('route-bar').classList.add('show');
-  closeSheet();
-  fetch(`https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${toLng},${toLat}?overview=full&geometries=geojson`)
-    .then(r=>r.json()).then(data=>{
-      if(data.routes&&data.routes[0]){
-        const route=data.routes[0];
-        const dist=route.distance<1000?`${Math.round(route.distance)} ม.`:`${(route.distance/1000).toFixed(1)} กม.`;
-        const mins=Math.round(route.duration/60);
-        document.getElementById('route-detail').textContent=`ระยะทาง ${dist} · ประมาณ ${mins} นาที`;
-        map.addSource('route',{type:'geojson',data:{type:'Feature',geometry:route.geometry}});
-        map.addLayer({id:'route-line-bg',type:'line',source:'route',layout:{'line-join':'round','line-cap':'round'},paint:{'line-color':'#000','line-width':10,'line-opacity':0.3}});
-        map.addLayer({id:'route-line',type:'line',source:'route',layout:{'line-join':'round','line-cap':'round'},paint:{'line-color':'#c9a84c','line-width':5,'line-opacity':1}});
-        routeAdded=true;
-        const coords=route.geometry.coordinates;
-        const bounds=coords.reduce((b,c)=>b.extend(c),new maplibregl.LngLatBounds(coords[0],coords[0]));
-        map.fitBounds(bounds,{padding:60,duration:800});
-      }
-    }).catch(()=>{document.getElementById('route-detail').textContent='ไม่สามารถคำนวณเส้นทางได้';});
+  routeControl=L.Routing.control({
+    waypoints:[L.latLng(userLat,userLng),L.latLng(toLat,toLng)],
+    router:L.Routing.osrmv1({serviceUrl:'https://router.project-osrm.org/route/v1'}),
+    lineOptions:{styles:[{color:'#000',weight:10,opacity:0.2},{color:'#c9a84c',weight:5,opacity:1}]},
+    createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,
+    fitSelectedRoutes:true,showAlternatives:false
+  }).addTo(map);
+  routeControl.on('routesfound',e=>{
+    const r=e.routes[0].summary;
+    const dist=r.totalDistance<1000?`${Math.round(r.totalDistance)} ม.`:`${(r.totalDistance/1000).toFixed(1)} กม.`;
+    document.getElementById('route-detail').textContent=`ระยะทาง ${dist} · ประมาณ ${Math.round(r.totalTime/60)} นาที`;
+  });
+  routeControl.on('routingerror',()=>{document.getElementById('route-detail').textContent='ไม่สามารถคำนวณเส้นทางได้';});
 }
 
 function cancelRoute(){
-  if(routeAdded&&map.getSource('route')){map.removeLayer('route-line-bg');map.removeLayer('route-line');map.removeSource('route');routeAdded=false;}
+  if(routeControl){map.removeControl(routeControl);routeControl=null;}
   document.getElementById('route-bar').classList.remove('show');
 }
 
@@ -309,33 +268,30 @@ function openSheet(){sheetOpen=true;document.getElementById('bottom-sheet').clas
 function closeSheet(){sheetOpen=false;document.getElementById('bottom-sheet').classList.remove('open');document.getElementById('sheet-title').textContent='ลากขึ้นเพื่อดูรายการ';}
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderAll();}
 function openFilter(){document.getElementById('filter-bar').scrollIntoView({behavior:'smooth'});}
-function tabMap(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');closeSheet();}
-function tabList(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');openSheet();}
+function tabMap(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');closeSheet();setTimeout(()=>map.invalidateSize(),100);}
+function tabList(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');openSheet();setTimeout(()=>map.invalidateSize(),100);}
 
 function locateMe(){
-  const circle=document.getElementById('locate-circle');
-  const label=document.getElementById('locate-label');
+  const circle=document.getElementById('locate-circle'),label=document.getElementById('locate-label');
   circle.textContent='⏳';circle.classList.add('loading');label.textContent='กำลังหา...';
   if(!navigator.geolocation){alert('เบราว์เซอร์ไม่รองรับ GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';return;}
   navigator.geolocation.getCurrentPosition(pos=>{
     userLat=pos.coords.latitude;userLng=pos.coords.longitude;
-    if(userMarker)userMarker.remove();
-    const el=document.createElement('div');
-    el.style.cssText='width:18px;height:18px;background:#c9a84c;border:3px solid #0d1117;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.3),0 2px 8px rgba(0,0,0,0.5);';
-    userMarker=new maplibregl.Marker({element:el}).setLngLat([userLng,userLat]).addTo(map);
-    if(map.getSource('radius')){map.removeLayer('radius-fill');map.removeLayer('radius-line');map.removeSource('radius');}
-    const steps=64,r=500/111320,center=[userLng,userLat];
-    const coords=Array.from({length:steps+1},(_,i)=>{const a=i*360/steps*Math.PI/180;return[center[0]+r*Math.cos(a)/Math.cos(center[1]*Math.PI/180),center[1]+r*Math.sin(a)];});
-    map.addSource('radius',{type:'geojson',data:{type:'Feature',geometry:{type:'Polygon',coordinates:[coords]}}});
-    map.addLayer({id:'radius-fill',type:'fill',source:'radius',paint:{'fill-color':'#c9a84c','fill-opacity':0.08}});
-    map.addLayer({id:'radius-line',type:'line',source:'radius',paint:{'line-color':'#c9a84c','line-width':2,'line-dasharray':[5,4]}});
-    map.flyTo({center:[userLng,userLat],zoom:15,duration:800});
+    if(userMarker)map.removeLayer(userMarker);
+    if(radiusCircle)map.removeLayer(radiusCircle);
+    userMarker=L.marker([userLat,userLng],{icon:L.divIcon({
+      className:'',
+      html:`<div style="width:16px;height:16px;background:#c9a84c;border:3px solid #0d1117;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.3)"></div>`,
+      iconSize:[16,16],iconAnchor:[8,8]
+    })}).addTo(map).bindPopup('<span style="font-family:Sarabun;color:#f0d080;font-size:13px">📍 ตำแหน่งของคุณ</span>').openPopup();
+    radiusCircle=L.circle([userLat,userLng],{radius:500,color:'#c9a84c',fillColor:'#c9a84c',fillOpacity:0.07,weight:2,dashArray:'6,5'}).addTo(map);
+    map.setView([userLat,userLng],16);
     circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';
     renderAll();openSheet();
   },()=>{alert('ไม่สามารถหาตำแหน่งได้\nกรุณาอนุญาต GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';});
 }
 
-map.on('load',()=>renderAll());
+renderAll();
 </script>
 </body>
 </html>
