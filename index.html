@@ -379,16 +379,21 @@ function shareToilet(id){
   const t=TOILETS.find(x=>x.id===id);
   if(!t)return;
   const url=`${window.location.origin}${window.location.pathname}?id=${id}`;
-  const shareData={
-    title:`ห้องน้ำนครพนม — ${t.name}`,
-    text:`📍 ${t.name}\n${t.type} · ${t.hours} · ${t.free?'ฟรี':'มีค่าใช้จ่าย'}\nงานบวงสรวงพญาศรีสัตตนาคราช`,
-    url:url
-  };
+  const text=encodeURIComponent(`📍 ${t.name}\n${t.type} · ${t.hours} · ${t.free?'ฟรี':'มีค่าใช้จ่าย'}\nงานบวงสรวงพญาศรีสัตตนาคราช\n${url}`);
+  
   if(navigator.share){
-    navigator.share(shareData).catch(err=>console.log('Share cancelled',err));
+    navigator.share({
+      title:`ห้องน้ำนครพนม — ${t.name}`,
+      text:`📍 ${t.name}\n${t.type} · ${t.hours} · ${t.free?'ฟรี':'มีค่าใช้จ่าย'}\nงานบวงสรวงพญาศรีสัตตนาคราช`,
+      url:url
+    }).catch(()=>openLineShare(text));
   } else {
-    navigator.clipboard.writeText(url).then(()=>alert('คัดลอกลิงก์แล้ว!\n'+url));
+    openLineShare(text);
   }
+}
+
+function openLineShare(text){
+  window.open(`https://social-plugins.line.me/lineit/share?url=${text}`,'_blank');
 }
 
 function toggleSheet(){
