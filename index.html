@@ -456,7 +456,6 @@ function locateMe(){
   if(userLat!==null){map.setView([userLat,userLng],16);
 circle.style.transform='scale(0.9)';
 setTimeout(()=>circle.style.transform='scale(1)',200);
-openSheet();
 return;setTimeout(()=>circle.style.transform='scale(1)',200);return;}
   circle.textContent='⏳';circle.classList.add('loading');label.textContent='กำลังหา...';
   if(!navigator.geolocation){alert('เบราว์เซอร์ไม่รองรับ GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';return;}
