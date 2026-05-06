@@ -379,7 +379,10 @@ function startRoute(toLat,toLng,name){
   if(isIOS){
     window.open(`maps://maps.apple.com/?daddr=${toLat},${toLng}&dirflg=w`,'_blank');
   } else {
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=walking`,'_blank');
+    window.location.href=`comgooglemaps://?daddr=${toLat},${toLng}&directionsmode=walking`;
+setTimeout(()=>{
+  window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=walking`;
+},500);
   }
 }
 
