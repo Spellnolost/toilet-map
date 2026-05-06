@@ -233,10 +233,15 @@ L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LON
 
 function autoLocate(){
   if(!navigator.geolocation)return;
-  navigator.geolocation.getCurrentPosition(pos=>{
-    userLat=pos.coords.latitude;userLng=pos.coords.longitude;
+  navigator.geolocation.watchPosition(pos=>{
+    userLat=pos.coords.latitude;
+    userLng=pos.coords.longitude;
     setUserPosition(userLat,userLng);
-  },{timeout:10000,maximumAge:0,enableHighAccuracy:true});
+  },()=>{},{
+    timeout:10000,
+    maximumAge:0,
+    enableHighAccuracy:true
+  });
 }
 
 function setUserPosition(lat,lng){
