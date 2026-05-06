@@ -226,9 +226,9 @@ const TOILETS=[
 let map,userMarker,radiusCircle,routeControl,markers=[];
 let currentFilter='all',userLat=null,userLng=null,sheetOpen=false;
 
-map=L.map('map',{zoomControl:true});
+map=L.map('map',{zoomControl:true}).setView([17.4094,104.7783],15);
 map.on('click',()=>{if(sheetOpen)closeSheet();});
-map.on('dragstart',()=>{if(sheetOpen)closeSheet();});.setView([17.4094,104.7783],15);
+map.on('dragstart',()=>{if(sheetOpen)closeSheet();});
 L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LONGDO_KEY}&proj=epsg3857&HD=1`,{
   attribution:'© Longdo Map © OpenStreetMap',maxZoom:20
 }).addTo(map);
