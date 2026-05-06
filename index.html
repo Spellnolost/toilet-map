@@ -124,7 +124,7 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
     <button id="route-cancel" onclick="cancelRoute()">✕ ยกเลิก</button>
   </div>
   <div id="bottom-sheet">
-    <div id="sheet-handle-area">
+    <div id="sheet-handle-area" onclick="closeSheet()">
   <div id="sheet-handle"></div>
   <div id="sheet-summary">
     <span id="sheet-title">รายการห้องน้ำ</span>
@@ -226,7 +226,9 @@ const TOILETS=[
 let map,userMarker,radiusCircle,routeControl,markers=[];
 let currentFilter='all',userLat=null,userLng=null,sheetOpen=false;
 
-map=L.map('map',{zoomControl:true}).setView([17.4094,104.7783],15);
+map=L.map('map',{zoomControl:true});
+map.on('click',()=>{if(sheetOpen)closeSheet();});
+map.on('dragstart',()=>{if(sheetOpen)closeSheet();});.setView([17.4094,104.7783],15);
 L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LONGDO_KEY}&proj=epsg3857&HD=1`,{
   attribution:'© Longdo Map © OpenStreetMap',maxZoom:20
 }).addTo(map);
@@ -244,6 +246,7 @@ function autoLocate(){
   });
 }
 
+let firstPosition=true;
 function setUserPosition(lat,lng){
   if(userMarker)map.removeLayer(userMarker);
   if(radiusCircle)map.removeLayer(radiusCircle);
@@ -253,7 +256,11 @@ function setUserPosition(lat,lng){
     iconSize:[16,16],iconAnchor:[8,8]
   })}).addTo(map);
   radiusCircle=L.circle([lat,lng],{radius:500,color:'#c9a84c',fillColor:'#c9a84c',fillOpacity:0.07,weight:2,dashArray:'6,5'}).addTo(map);
-  map.setView([lat,lng],16);
+  if(firstPosition){
+    map.setView([lat,lng],16);
+    firstPosition=false;
+    openSheet();
+  }
   renderAll();
 }
 
