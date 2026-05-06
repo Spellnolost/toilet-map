@@ -347,7 +347,7 @@ markers.push(m);
 }
 
 function makeItem(t,nearby){
-  const ds=t.dist!==null?(t.dist<1000?`${Math.round(t.dist)} ม.`:`${(t.dist/1000).toFixed(1)} กม.`):'';
+  const ds=t.dist!==null?(t.dist<1000?`~${Math.round(t.dist*1.3)} ม.`:`~${((t.dist*1.3)/1000).toFixed(1)} กม.`):'';
   return `<div class="toilet-item ${nearby?'nearby':'far'}" onclick="focusToilet(${t.lat},${t.lng})">
     <div class="ti-icon ${t.free?'free':'paid'}">🚻</div>
     <div style="flex:1;min-width:0">
