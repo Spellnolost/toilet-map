@@ -31,7 +31,7 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 #route-name{font-size:13px;font-weight:700;color:#f0d080;}
 #route-detail{font-size:11px;color:#52b788;margin-top:2px;}
 #route-cancel{background:#2a0f08;border:none;border-radius:8px;padding:7px 12px;font-size:12px;color:#e07050;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;white-space:nowrap;flex-shrink:0;}
-#bottom-sheet{position:absolute;bottom:0;left:0;right:0;z-index:800;background:#0d1a12;border-radius:18px 18px 0 0;border-top:2px solid #c9a84c;transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);transform:translateY(calc(100% - 56px));max-height:75vh;display:flex;flex-direction:column;}
+#bottom-sheet{position:absolute;bottom:0;left:0;right:0;z-index:800;background:#0d1a12;border-radius:18px 18px 0 0;border-top:2px solid #c9a84c;transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);transform:translateY(100%);max-height:75vh;display:flex;flex-direction:column;}
 #bottom-sheet.open{transform:translateY(0);}
 #sheet-handle-area{padding:10px 16px 6px;cursor:pointer;flex-shrink:0;}
 #sheet-handle{width:36px;height:4px;background:#c9a84c;border-radius:2px;margin:0 auto 8px;opacity:0.5;}
@@ -124,13 +124,13 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
     <button id="route-cancel" onclick="cancelRoute()">✕ ยกเลิก</button>
   </div>
   <div id="bottom-sheet">
-    <div id="sheet-handle-area" onclick="toggleSheet()">
-      <div id="sheet-handle"></div>
-      <div id="sheet-summary">
-        <span id="sheet-title">ลากขึ้นเพื่อดูรายการ</span>
-        <b id="count-label">5 แห่ง</b>
-      </div>
-    </div>
+    <div id="sheet-handle-area">
+  <div id="sheet-handle"></div>
+  <div id="sheet-summary">
+    <span id="sheet-title">รายการห้องน้ำ</span>
+    <b id="count-label">5 แห่ง</b>
+  </div>
+</div>
     <div id="sheet-content"><div id="toilet-list"></div></div>
   </div>
 </div>
@@ -447,7 +447,11 @@ function tabList(el){if(sheetOpen){closeSheet();document.querySelectorAll('.tab-
 
 function locateMe(){
   const circle=document.getElementById('locate-circle'),label=document.getElementById('locate-label');
-  if(userLat!==null){map.setView([userLat,userLng],16);circle.style.transform='scale(0.9)';setTimeout(()=>circle.style.transform='scale(1)',200);return;}
+  if(userLat!==null){map.setView([userLat,userLng],16);
+circle.style.transform='scale(0.9)';
+setTimeout(()=>circle.style.transform='scale(1)',200);
+openSheet();
+return;setTimeout(()=>circle.style.transform='scale(1)',200);return;}
   circle.textContent='⏳';circle.classList.add('loading');label.textContent='กำลังหา...';
   if(!navigator.geolocation){alert('เบราว์เซอร์ไม่รองรับ GPS');circle.textContent='📍';circle.classList.remove('loading');label.textContent='ใกล้ฉัน';return;}
   navigator.geolocation.getCurrentPosition(pos=>{
