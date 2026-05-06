@@ -226,7 +226,14 @@ L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LON
 }).addTo(map);
 
 map.on('dragstart',()=>{if(sheetOpen)closeSheet();});
-map.on('click',()=>{map.closePopup();});
+map.on('click',function(e){
+  if(e.originalEvent.target.closest('.leaflet-popup')||
+     e.originalEvent.target.closest('.leaflet-marker-icon')||
+     e.originalEvent.target.closest('.leaflet-marker-pane')){
+    return;
+  }
+  map.closePopup();
+});
 
 function calcDist(a,b,c,d){
   const R=6371000,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
@@ -324,7 +331,6 @@ function renderAll(){
     const inRadius=userLat!==null&&t.dist!==null&&t.dist<=500;
     const m=L.marker([t.lat,t.lng],{icon:getIcon(t,inRadius)})
       .addTo(map).bindPopup(getPopup(t,t.dist),{maxWidth:260});
-m.on('click',function(e){L.DomEvent.stopPropagation(e);});
 markers.push(m);
   });
   const el=document.getElementById('toilet-list');el.innerHTML='';
