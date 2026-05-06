@@ -66,8 +66,7 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 0;cursor:pointer;font-size:10px;color:#3a6a3a;}
 .tab-item.active{color:#52b788;}
 .tab-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;}
-#locate-tab{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding-bottom:0;margin-top:-1px;}
-#locate-circle{background:linear-gradient(135deg,#c9a84c,#e8c56a);border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:24px;border:3px solid #0a1510;box-shadow:0 3px 16px rgba(201,168,76,0.5);-webkit-tap-highlight-color:transparent;outline:none;}#locate-circle.loading{background:#2a3a2a;}
+#locate-tab{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding-bottom:0;margin-top:-1px;-webkit-tap-highlight-color:transparent;}#locate-circle{background:linear-gradient(135deg,#c9a84c,#e8c56a);border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:24px;border:3px solid #0a1510;box-shadow:0 3px 16px rgba(201,168,76,0.5);-webkit-tap-highlight-color:transparent;outline:none;}#locate-circle.loading{background:#2a3a2a;}
 #locate-label{font-size:10px;color:#c9a84c;font-weight:700;margin-top:3px;}
 
 /* About Modal */
@@ -226,7 +225,8 @@ let map,userMarker,radiusCircle,routeControl,markers=[];
 let currentFilter='all',userLat=null,userLng=null,sheetOpen=false;
 
 map=L.map('map',{zoomControl:true}).setView([17.4094,104.7783],15);
-map.on('dragstart',()=>{if(sheetOpen)closeSheet();});
+map.on('dragstart',()=>{map.closePopup();if(sheetOpen)closeSheet();});
+map.on('click',()=>{map.closePopup();});
 L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LONGDO_KEY}&proj=epsg3857&HD=1`,{
   attribution:'© Longdo Map © OpenStreetMap',maxZoom:20
 }).addTo(map);
@@ -268,8 +268,10 @@ function getIcon(t,nearest){
   const glow=nearest?'0 0 0 4px rgba(201,168,76,0.25),':'';
   return L.divIcon({
     className:'',
-    html:`<div style="width:${size}px;height:${size}px;background:${bg};border:2.5px solid ${border};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:${glow}0 3px 10px rgba(0,0,0,0.6)">🚻</div>`,
-    iconSize:[size,size],iconAnchor:[size/2,size/2]
+html:`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+  <div style="background:#0d1a12;border:1px solid ${border};border-radius:6px;padding:2px 6px;font-size:10px;color:${t&&nearest?'#c9a84c':'#fff'};white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;font-family:'Sarabun',sans-serif;font-weight:600;">${t?t.name.substring(0,12)+(t.name.length>12?'…':''):''}</div>
+  <div style="width:${size}px;height:${size}px;background:${bg};border:2.5px solid ${border};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:${glow}0 3px 10px rgba(0,0,0,0.6)">🚻</div>
+</div>`,    iconSize:[size,size],iconAnchor:[size/2,size/2]
   });
 }
 
