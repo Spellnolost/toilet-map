@@ -226,10 +226,10 @@ L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LON
 }).addTo(map);
 
 map.on('dragstart',()=>{if(sheetOpen)closeSheet();});
-map.on('click',()=>{
-  setTimeout(()=>{map.closePopup();},50);
+map.on('click',function(e){
+  if(e.originalEvent.target.closest('.leaflet-marker-icon')){return;}
+  map.closePopup();
 });
-
 function calcDist(a,b,c,d){
   const R=6371000,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
   const x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dG/2)**2;
