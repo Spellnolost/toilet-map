@@ -265,7 +265,7 @@ function createMarkerHTML(t,inRadius){
 const SHARE_ICON=`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
 
 function getPopupHTML(t,dist){
-  const ds=dist!==null?(dist<1000?`${Math.round(dist)} ม.`:`${(dist/1000).toFixed(1)} กม.`):'';
+  const ds=dist!==null?(dist<1000?`~${Math.round(dist*1.3)} ม.`:`~${((dist*1.3)/1000).toFixed(1)} กม.`):'';
   const canNav=userLat!==null;
   const photoHTML=t.photo
     ?`<img src="${t.photo}" style="width:100%;height:120px;border-radius:8px;object-fit:cover;margin-bottom:10px;"/>`
