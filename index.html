@@ -392,8 +392,17 @@ function autoLocate(){
     dotEl.innerHTML=`<div style="width:16px;height:16px;background:#c9a84c;border:3px solid #0d1117;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.3)"></div>`;
     userMarker=new longdo.Marker({lon:userLng,lat:userLat},{icon:{html:dotEl.innerHTML,offset:{x:8,y:8}}});
     map.Overlays.add(userMarker);
-radiusCircle=new longdo.Circle({lon:userLng,lat:userLat},500,{lineColor:'#c9a84c',lineWidth:2,fillColor:'rgba(201,168,76,0.07)'});    map.Overlays.add(radiusCircle);
-    if(firstPosition){
+radiusCircle=new longdo.Circle(
+  {lon:userLng,lat:userLat},
+  500,
+  {
+    lineColor:'rgba(201,168,76,1)',
+    lineWidth:2,
+    fillColor:'rgba(201,168,76,0.07)',
+    draggable:false,
+    weight:2
+  }
+);    if(firstPosition){
       map.location({lon:userLng,lat:userLat});
 map.zoom(16);
       firstPosition=false;
