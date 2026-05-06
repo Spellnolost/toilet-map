@@ -371,8 +371,7 @@ function startRoute(toLat,toLng,name){
   document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
   document.getElementById('route-detail').textContent='กำลังคำนวณเส้นทาง...';
   document.getElementById('route-bar').classList.add('show');
-  fetch(`https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${toLng},${toLat}?overview=full&geometries=geojson`)
-    .then(r=>r.json()).then(data=>{
+fetch(`https://router.project-osrm.org/route/v1/foot/${userLng},${userLat};${toLng},${toLat}?overview=full&geometries=geojson`)    .then(r=>r.json()).then(data=>{
       if(data.routes&&data.routes[0]){
         const route=data.routes[0];
         const dist=route.distance<1000?`${Math.round(route.distance)} ม.`:`${(route.distance/1000).toFixed(1)} กม.`;
