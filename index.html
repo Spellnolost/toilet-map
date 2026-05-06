@@ -20,8 +20,10 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 .chip.active{background:#c9a84c;color:#0a1f12;font-weight:700;}
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
 #map{flex:1;width:100%;}
-#route-bar{display:none;position:absolute;top:10px;left:10px;right:10px;z-index:900;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:10px 14px;flex-direction:row;align-items:center;gap:10px;}
-#route-bar.show{display:flex;}
+#route-bar{display:none;position:absolute;top:10px;left:10px;right:10px;z-index:900;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:10px 14px;flex-direction:column;gap:8px;}
+#route-top{display:flex;align-items:center;gap:10px;}
+#route-photo{width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid #c9a84c;}
+#route-photo-placeholder{width:60px;height:60px;border-radius:10px;flex-shrink:0;background:#1a3020;border:1px dashed #2a4a2a;display:flex;align-items:center;justify-content:center;font-size:22px;}#route-bar.show{display:flex;}
 #route-name{font-size:13px;font-weight:700;color:#f0d080;}
 #route-detail{font-size:11px;color:#52b788;margin-top:2px;}
 #route-cancel{background:#2a0f08;border:none;border-radius:8px;padding:7px 12px;font-size:12px;color:#e07050;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;white-space:nowrap;flex-shrink:0;}
@@ -110,12 +112,15 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 <div id="main">
   <div id="map"></div>
   <div id="route-bar">
+  <div id="route-top">
+    <div id="route-photo-placeholder">📷</div>
     <div id="route-info" style="flex:1">
       <div id="route-name">กำลังคำนวณเส้นทาง...</div>
       <div id="route-detail"></div>
     </div>
-    <button id="route-cancel" onclick="cancelRoute()">✕ ยกเลิก</button>
+    <button id="route-cancel" onclick="cancelRoute()" style="background:#2a0f08;border:none;border-radius:8px;padding:7px 12px;font-size:12px;color:#e07050;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;white-space:nowrap;flex-shrink:0;">✕ ยกเลิก</button>
   </div>
+</div>
   <div id="bottom-sheet">
     <div id="sheet-handle-area" onclick="closeSheet()">
       <div id="sheet-handle"></div>
@@ -372,6 +377,14 @@ function startRoute(toLat,toLng,name){
   document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
   document.getElementById('route-detail').textContent='กำลังคำนวณเส้นทาง...';
   document.getElementById('route-bar').classList.add('show');
+  const t=TOILETS.find(x=>x.name===name);
+const photoEl=document.getElementById('route-photo-placeholder');
+if(t&&t.photo){
+  photoEl.outerHTML=`<img id="route-photo" src="${t.photo}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid #c9a84c;"/>`;
+} else {
+  photoEl.innerHTML='📷';
+  photoEl.style.cssText='width:60px;height:60px;border-radius:10px;flex-shrink:0;background:#1a3020;border:1px dashed #2a4a2a;display:flex;align-items:center;justify-content:center;font-size:22px;';
+}
 fetch(`https://router.project-osrm.org/route/v1/foot/${userLng},${userLat};${toLng},${toLat}?overview=full&geometries=geojson`)    .then(r=>r.json()).then(data=>{
       if(data.routes&&data.routes[0]){
         const route=data.routes[0];
