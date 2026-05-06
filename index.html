@@ -229,7 +229,7 @@ map=new longdo.Map({
 });
 
 map.Event.bind('click',function(){
-  if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
+  if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
   if(sheetOpen)closeSheet();
 });
 
@@ -302,15 +302,14 @@ function renderAll(){
     );
     m._toilet=t;
     map.Event.bind(longdo.EventName.Click,m,function(){
-      if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
-      const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
-      const popup=new longdo.Popup(
-        {lon:t.lng,lat:t.lat},
-        {title:'',detail:getPopupHTML(t,dist),size:{width:270},closable:true}
-      );
-      map.Overlays.add(popup);
-      activePopup=popup;
-    });
+  if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
+  const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
+  const div=document.createElement('div');
+  div.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9000;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:16px;max-width:280px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.8);';
+  div.innerHTML=`<button onclick="this.parentElement.remove();window._activeDiv=null;" style="position:absolute;top:8px;right:8px;background:transparent;border:none;color:#c9a84c;font-size:20px;cursor:pointer;">×</button>${getPopupHTML(t,dist)}`;
+  document.body.appendChild(div);
+  window._activeDiv=div;
+});
     map.Overlays.add(m);
     markers.push(m);
   });
