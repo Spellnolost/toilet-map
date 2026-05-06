@@ -448,6 +448,15 @@ function toggleSheet(){sheetOpen=!sheetOpen;document.getElementById('bottom-shee
 function openSheet(){
 if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
 sheetOpen=true;document.getElementById('bottom-sheet').classList.add('open');document.getElementById('list-tab').classList.add('active');}
+// Swipe down to close sheet
+let touchStartY=0;
+document.getElementById('bottom-sheet').addEventListener('touchstart',e=>{
+  touchStartY=e.touches[0].clientY;
+},{passive:true});
+document.getElementById('bottom-sheet').addEventListener('touchend',e=>{
+  const diff=e.changedTouches[0].clientY-touchStartY;
+  if(diff>60)closeSheet();
+},{passive:true});
 function closeSheet(){sheetOpen=false;document.getElementById('bottom-sheet').classList.remove('open');document.getElementById('list-tab').classList.remove('active');}
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderAll();}
 function tabMap(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');closeSheet();}
