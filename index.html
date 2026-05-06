@@ -261,7 +261,7 @@ function setUserPosition(lat,lng){
   renderAll();
 }
 
-function getIcon(t,nearest){
+function getIcon(t,inRadius){
   const bg=t.free?'#1a5c30':'#8b2500';
   const border=nearest?'#c9a84c':'rgba(255,255,255,0.7)';
   const size=nearest?40:34;
@@ -327,7 +327,8 @@ function renderAll(){
   const list=filterToilets();
   document.getElementById('count-label').textContent=`${list.length} แห่ง`;
   list.forEach((t,i)=>{
-    const m=L.marker([t.lat,t.lng],{icon:getIcon(t,i===0&&userLat!==null)})
+    const inRadius=userLat!==null&&t.dist!==null&&t.dist<=500;
+const m=L.marker([t.lat,t.lng],{icon:getIcon(t,inRadius)})
       .addTo(map).bindPopup(getPopup(t,t.dist),{maxWidth:260});
     markers.push(m);
   });
