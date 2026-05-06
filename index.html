@@ -508,6 +508,14 @@ function doSearch(){
   }).join('');
 }
 
+let aboutTouchStartY=0;
+document.getElementById('about-box').addEventListener('touchstart',e=>{
+  aboutTouchStartY=e.touches[0].clientY;
+},{passive:true});
+document.getElementById('about-box').addEventListener('touchend',e=>{
+  const diff=e.changedTouches[0].clientY-aboutTouchStartY;
+  if(diff>60)closeAbout();
+},{passive:true});
 function openAbout(){document.getElementById('about-modal').classList.add('show');}
 function closeAbout(){document.getElementById('about-modal').classList.remove('show');}
 function closeAboutOutside(e){if(e.target===document.getElementById('about-modal'))closeAbout();}
