@@ -420,8 +420,7 @@ radiusCircle=new longdo.Polygon(coords,{lineColor:'#c9a84c',lineWidth:2,fillColo
 map.Overlays.add(radiusCircle);    
 if(firstPosition){
       map.location({lon:userLng,lat:userLat});
-map.zoom(16);
-      firstPosition=false;
+firstPosition=false;
     }
     const list=filterToilets();
     markers.forEach((m,i)=>{
