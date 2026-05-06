@@ -288,6 +288,18 @@ function filterToilets(){
   .sort((a,b)=>a.dist===null?0:a.dist-b.dist);
 }
 
+function showToiletInfo(id){
+  const t=TOILETS.find(x=>x.id===id);
+  if(!t)return;
+  if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
+  const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
+  const div=document.createElement('div');
+  div.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9000;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:16px;max-width:280px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.8);';
+  div.innerHTML=`<button onclick="this.parentElement.remove();window._activeDiv=null;" style="position:absolute;top:8px;right:8px;background:transparent;border:none;color:#c9a84c;font-size:20px;cursor:pointer;line-height:1;">×</button>${getPopupHTML(t,dist)}`;
+  document.body.appendChild(div);
+  window._activeDiv=div;
+}
+
 function renderAll(){
   markers.forEach(m=>map.Overlays.remove(m));markers=[];
   const list=filterToilets();
@@ -296,22 +308,18 @@ function renderAll(){
     const inRadius=userLat!==null&&t.dist!==null&&t.dist<=500;
     const el=document.createElement('div');
     el.innerHTML=createMarkerHTML(t,inRadius);
-    const m=new longdo.Marker(
-      {lon:t.lng,lat:t.lat},
-      {title:t.name,icon:{html:el.innerHTML,offset:{x:inRadius?20:17,y:inRadius?60:34}}}
-    );
-    m._toilet=t;
-    map.Event.bind(longdo.EventName.Click,m,function(){
-  if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
-  const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
-  const div=document.createElement('div');
-  div.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9000;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:16px;max-width:280px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.8);';
-  div.innerHTML=`<button onclick="this.parentElement.remove();window._activeDiv=null;" style="position:absolute;top:8px;right:8px;background:transparent;border:none;color:#c9a84c;font-size:20px;cursor:pointer;">×</button>${getPopupHTML(t,dist)}`;
-  document.body.appendChild(div);
-  window._activeDiv=div;
-});
-    map.Overlays.add(m);
-    markers.push(m);
+    const tid=t.id;
+const markerHTML=createMarkerHTML(t,inRadius).replace(
+  '<div style="display:flex;flex-direction:column;align-items:center;">',
+  `<div style="display:flex;flex-direction:column;align-items:center;" onclick="showToiletInfo(${tid})">`
+);
+const m=new longdo.Marker(
+  {lon:t.lng,lat:t.lat},
+  {title:t.name,icon:{html:markerHTML,offset:{x:inRadius?20:17,y:inRadius?60:34}}}
+);
+m._toilet=t;
+map.Overlays.add(m);
+markers.push(m);
   });
 
   const el=document.getElementById('toilet-list');el.innerHTML='';
