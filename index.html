@@ -447,7 +447,9 @@ function renderList(){
 }
 
 function toggleSheet(){sheetOpen=!sheetOpen;document.getElementById('bottom-sheet').classList.toggle('open',sheetOpen);document.getElementById('list-tab').classList.toggle('active',sheetOpen);}
-function openSheet(){sheetOpen=true;document.getElementById('bottom-sheet').classList.add('open');document.getElementById('list-tab').classList.add('active');}
+function openSheet(){
+if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
+sheetOpen=true;document.getElementById('bottom-sheet').classList.add('open');document.getElementById('list-tab').classList.add('active');}
 function closeSheet(){sheetOpen=false;document.getElementById('bottom-sheet').classList.remove('open');document.getElementById('list-tab').classList.remove('active');}
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderAll();}
 function tabMap(el){document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');closeSheet();}
