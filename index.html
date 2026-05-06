@@ -578,6 +578,9 @@ if(deepId){
 map.Event.bind('ready', function(){
   if(isLineBrowser())showOpenInBrowserBanner();
   renderAll();
+  const s=document.createElement('style');          // เพิ่มบรรทัดนี้
+  s.textContent='.ldmap-type label{color:#000!important;}';  // เพิ่มบรรทัดนี้
+  document.head.appendChild(s);                     // เพิ่มบรรทัดนี้
   autoLocate();
 });
 </script>
