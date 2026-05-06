@@ -366,6 +366,7 @@ function focusToilet(lat,lng){
 
 function startRoute(toLat,toLng,name){
   if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
+  if(window._routeLine){map.Overlays.remove(window._routeLine);window._routeLine=null;}
   if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
   closeSheet();
   document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
@@ -378,8 +379,9 @@ fetch(`https://router.project-osrm.org/route/v1/foot/${userLng},${userLat};${toL
         document.getElementById('route-detail').textContent=`ระยะทาง ${dist} · ประมาณ ${Math.round(route.duration/60)} นาที`;
         const coords=route.geometry.coordinates.map(c=>({lon:c[0],lat:c[1]}));
         const line=new longdo.Polyline(coords,{lineColor:'#4A90D9',lineWidth:6,borderColor:'rgba(0,0,0,0.2)',borderWidth:3});
-        map.Overlays.add(line);
-        document.getElementById('route-cancel').onclick=()=>{map.Overlays.remove(line);cancelRoute();};
+map.Overlays.add(line);
+window._routeLine=line;
+document.getElementById('route-cancel').onclick=()=>{map.Overlays.remove(line);window._routeLine=null;cancelRoute();};
       }
     }).catch(()=>{document.getElementById('route-detail').textContent='ไม่สามารถคำนวณเส้นทางได้';});
 }
