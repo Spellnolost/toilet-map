@@ -419,7 +419,7 @@ const coords=Array.from({length:steps+1},(_,i)=>{
 radiusCircle=new longdo.Polygon(coords,{lineColor:'#c9a84c',lineWidth:2,fillColor:'rgba(201,168,76,0.07)'});
 map.Overlays.add(radiusCircle);    
 if(firstPosition){
-      map.location({lon:userLng,lat:userLat});
+      map.location({lon:userLng,lat:userLat},true);
 firstPosition=false;
     }
     const list=filterToilets();
