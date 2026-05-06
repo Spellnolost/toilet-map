@@ -257,8 +257,18 @@ function setUserPosition(lat,lng){
   if(firstPosition){
     map.setView([lat,lng],16);
     firstPosition=false;
+    renderAll();
+  } else {
+    // อัปเดตแค่ icon ของ marker ไม่สร้างใหม่
+    markers.forEach(m=>{
+      const t=TOILETS.find(x=>Math.abs(x.lat-m.getLatLng().lat)<0.0001);
+      if(t){
+        const inRadius=calcDist(lat,lng,t.lat,t.lng)<=500;
+        m.setIcon(getIcon(t,inRadius));
+        m.setPopupContent(getPopup(t,calcDist(lat,lng,t.lat,t.lng)));
+      }
+    });
   }
-  renderAll();
 }
 
 function getIcon(t,inRadius){
