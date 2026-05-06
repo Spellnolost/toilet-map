@@ -372,17 +372,34 @@ function focusToilet(lat,lng){
   setTimeout(()=>showToiletInfo(TOILETS.find(t=>Math.abs(t.lat-lat)<0.0001)?.id),500);
 }
 
-function startRoute(toLat,toLng,name){
-  if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
-  if(window._routeLine){map.Overlays.remove(window._routeLine);window._routeLine=null;}
-  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-  if(isIOS){
-    window.open(`maps://maps.apple.com/?daddr=${toLat},${toLng}&dirflg=w`,'_blank');
+function startRoute(toLat, toLng, name) {
+  if (window._activeDiv) { window._activeDiv.remove(); window._activeDiv = null; }
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isAndroid = /Android/.test(navigator.userAgent);
+
+  if (isIOS) {
+    // iOS: ลอง Google Maps app ก่อน, fallback Apple Maps
+    const gmapsApp = `comgooglemaps://?daddr=${toLat},${toLng}&directionsmode=walking`;
+    const appleMaps = `maps://maps.apple.com/?daddr=${toLat},${toLng}&dirflg=w`;
+    
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = gmapsApp;
+    document.body.appendChild(iframe);
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+      window.location.href = appleMaps;
+    }, 1500);
+
+  } else if (isAndroid) {
+    // Android: intent URI เปิด Google Maps app โดยตรง ไม่ผ่าน browser
+    const intentUrl = `intent://maps.google.com/maps?daddr=${toLat},${toLng}&dirflg=w#Intent;scheme=https;package=com.google.android.apps.maps;end`;
+    window.location.href = intentUrl;
+
   } else {
-    window.location.href=`comgooglemaps://?daddr=${toLat},${toLng}&directionsmode=walking`;
-setTimeout(()=>{
-  window.location.href=`https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=walking`;
-},500);
+    // Desktop / อื่นๆ: เปิด tab ใหม่
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=walking`, '_blank');
   }
 }
 
