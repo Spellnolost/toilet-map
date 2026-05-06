@@ -540,8 +540,8 @@ if(deepId){
   if(t){setTimeout(()=>{map.location({lon:t.lng,lat:t.lat},true);map.zoom(17,true);},1000);}
 }
 
-if(isLineBrowser())showOpenInBrowserBanner();
 map.Event.bind('ready', function(){
+  if(isLineBrowser())showOpenInBrowserBanner();
   renderAll();
   autoLocate();
 });
