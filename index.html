@@ -360,8 +360,8 @@ function makeItem(t,nearby){
 
 function focusToilet(lat,lng){
   closeSheet();
-  map.location({lon:lng,lat:lat},true);
-  map.zoom(17,true);
+  map.bound({minLon:lng-0.002,minLat:lat-0.002,maxLon:lng+0.002,maxLat:lat+0.002});
+  setTimeout(()=>showToiletInfo(TOILETS.find(t=>Math.abs(t.lat-lat)<0.0001)?.id),500);
 }
 
 function startRoute(toLat,toLng,name){
