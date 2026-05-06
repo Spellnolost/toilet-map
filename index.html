@@ -365,6 +365,7 @@ function focusToilet(lat,lng){
 }
 
 function startRoute(toLat,toLng,name){
+  if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
   if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
   closeSheet();
   document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
