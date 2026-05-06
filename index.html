@@ -458,8 +458,7 @@ function tabList(el){
 function locateMe(){
   const circle=document.getElementById('locate-circle');
   if(userLat!==null){
-    map.location({lon:userLng,lat:userLat});
-    map.zoom(16);
+    map.bound({minLon:userLng-0.003,minLat:userLat-0.003,maxLon:userLng+0.003,maxLat:userLat+0.003});
     circle.style.transform='scale(0.9)';
     setTimeout(()=>circle.style.transform='scale(1)',200);
     return;
