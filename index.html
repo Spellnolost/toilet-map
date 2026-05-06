@@ -301,9 +301,10 @@ function showToiletInfo(id){
   const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
   const div=document.createElement('div');
   div.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9000;background:#0f2418;border:1.5px solid #c9a84c;border-radius:14px;padding:16px;max-width:280px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.8);';
+div.id='toilet-popup-div';
 div.innerHTML=`
   <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-    <button onclick="this.closest('div[style]').remove();window._activeDiv=null;" 
+    <button onclick="document.getElementById('toilet-popup-div').remove();window._activeDiv=null;"
       style="background:#1a3020;border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#c9a84c;font-size:20px;cursor:pointer;flex-shrink:0;line-height:1;">×</button>
   </div>
   ${getPopupHTML(t,dist)}`;  document.body.appendChild(div);
