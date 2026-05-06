@@ -301,7 +301,7 @@ function renderAll(){
       {title:t.name,icon:{html:el.innerHTML,offset:{x:inRadius?20:17,y:inRadius?60:34}}}
     );
     m._toilet=t;
-    map.Event.bind('click',m,function(){
+    map.Event.bind(longdo.EventName.Click,m,function(){
       if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
       const dist=userLat!==null?calcDist(userLat,userLng,t.lat,t.lng):null;
       const popup=new longdo.Popup(
