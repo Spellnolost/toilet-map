@@ -123,12 +123,15 @@ body{font-family:'Sarabun',sans-serif;background:#0d1117;color:#fff;display:flex
 </div>
   <div id="bottom-sheet">
     <div id="sheet-handle-area" onclick="closeSheet()">
-      <div id="sheet-handle"></div>
-      <div id="sheet-summary">
-        <span id="sheet-title">รายการห้องน้ำ</span>
-        <b id="count-label">5 แห่ง</b>
-      </div>
+  <div id="sheet-handle"></div>
+  <div id="sheet-summary">
+    <span id="sheet-title">รายการห้องน้ำ</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <b id="count-label">5 แห่ง</b>
+      <button onclick="closeSheet()" style="background:#1a3020;border:none;border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#c9a84c;font-size:16px;cursor:pointer;flex-shrink:0;line-height:1;">×</button>
     </div>
+  </div>
+</div>
     <div id="sheet-content"><div id="toilet-list"></div></div>
   </div>
 </div>
