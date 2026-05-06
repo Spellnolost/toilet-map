@@ -226,7 +226,9 @@ L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LON
 }).addTo(map);
 
 map.on('dragstart',()=>{if(sheetOpen)closeSheet();});
-map.on('click',()=>{map.closePopup();});
+map.on('click',()=>{
+  setTimeout(()=>{map.closePopup();},50);
+});
 
 function calcDist(a,b,c,d){
   const R=6371000,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
