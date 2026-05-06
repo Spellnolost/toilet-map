@@ -372,31 +372,12 @@ function focusToilet(lat,lng){
 function startRoute(toLat,toLng,name){
   if(window._activeDiv){window._activeDiv.remove();window._activeDiv=null;}
   if(window._routeLine){map.Overlays.remove(window._routeLine);window._routeLine=null;}
-  if(activePopup){map.Overlays.remove(activePopup);activePopup=null;}
-  closeSheet();
-  document.getElementById('route-name').textContent='🧭 นำทางไป '+name;
-  document.getElementById('route-detail').textContent='กำลังคำนวณเส้นทาง...';
-  document.getElementById('route-bar').classList.add('show');
-  const t=TOILETS.find(x=>x.name===name);
-const photoEl=document.getElementById('route-photo-placeholder');
-if(t&&t.photo){
-  photoEl.outerHTML=`<img id="route-photo" src="${t.photo}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid #c9a84c;"/>`;
-} else {
-  photoEl.innerHTML='📷';
-  photoEl.style.cssText='width:60px;height:60px;border-radius:10px;flex-shrink:0;background:#1a3020;border:1px dashed #2a4a2a;display:flex;align-items:center;justify-content:center;font-size:22px;';
-}
-fetch(`https://router.project-osrm.org/route/v1/foot/${userLng},${userLat};${toLng},${toLat}?overview=full&geometries=geojson`)    .then(r=>r.json()).then(data=>{
-      if(data.routes&&data.routes[0]){
-        const route=data.routes[0];
-        const dist=route.distance<1000?`${Math.round(route.distance)} ม.`:`${(route.distance/1000).toFixed(1)} กม.`;
-        document.getElementById('route-detail').textContent=`ระยะทาง ${dist} · ประมาณ ${Math.round(route.duration/60)} นาที`;
-        const coords=route.geometry.coordinates.map(c=>({lon:c[0],lat:c[1]}));
-        const line=new longdo.Polyline(coords,{lineColor:'#4A90D9',lineWidth:6,borderColor:'rgba(0,0,0,0.2)',borderWidth:3});
-map.Overlays.add(line);
-window._routeLine=line;
-document.getElementById('route-cancel').onclick=()=>{map.Overlays.remove(line);window._routeLine=null;cancelRoute();};
-      }
-    }).catch(()=>{document.getElementById('route-detail').textContent='ไม่สามารถคำนวณเส้นทางได้';});
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+  if(isIOS){
+    window.open(`maps://maps.apple.com/?daddr=${toLat},${toLng}&dirflg=w`,'_blank');
+  } else {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=walking`,'_blank');
+  }
 }
 
 function cancelRoute(){
