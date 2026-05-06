@@ -269,7 +269,7 @@ function getIcon(t,nearest){
   return L.divIcon({
     className:'',
 html:`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-  <div style="background:#0d1a12;border:1px solid ${border};border-radius:6px;padding:2px 6px;font-size:10px;color:${t&&nearest?'#c9a84c':'#fff'};white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;font-family:'Sarabun',sans-serif;font-weight:600;">${t?t.name.substring(0,12)+(t.name.length>12?'…':''):''}</div>
+  ${nearest?`<div style="background:#0d1a12;border:1px solid #c9a84c;border-radius:6px;padding:2px 6px;font-size:10px;color:#c9a84c;white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;font-family:'Sarabun',sans-serif;font-weight:600;">${t?t.name.substring(0,12)+(t.name.length>12?'…':''):''}</div>`:''}
   <div style="width:${size}px;height:${size}px;background:${bg};border:2.5px solid ${border};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:${glow}0 3px 10px rgba(0,0,0,0.6)">🚻</div>
 </div>`,    iconSize:[size,size],iconAnchor:[size/2,size/2]
   });
