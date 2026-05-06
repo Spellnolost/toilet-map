@@ -226,7 +226,6 @@ L.tileLayer(`https://ms.longdo.com/mmmap/tile.php?zoom={z}&x={x}&y={y}&key=${LON
 }).addTo(map);
 
 map.on('dragstart',()=>{map.closePopup();if(sheetOpen)closeSheet();});
-map.on('click',()=>{map.closePopup();});
 
 function calcDist(a,b,c,d){
   const R=6371000,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
@@ -408,6 +407,7 @@ function tabList(el){
 
 function locateMe(){
   const circle=document.getElementById('locate-circle');
+  const label=document.getElementById('locate-label');
   if(userLat!==null){
     map.setView([userLat,userLng],16);
     circle.style.transform='scale(0.9)';
@@ -416,8 +416,19 @@ function locateMe(){
   }
   circle.textContent='⏳';
   circle.classList.add('loading');
-  document.getElementById('locate-label').textContent='กำลังหา...';
-  autoLocate();
+  label.textContent='กำลังหา...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude;
+    userLng=pos.coords.longitude;
+    setUserPosition(userLat,userLng);
+    circle.textContent='📍';
+    circle.classList.remove('loading');
+    label.textContent='ใกล้ฉัน';
+  },()=>{
+    circle.textContent='📍';
+    circle.classList.remove('loading');
+    label.textContent='ใกล้ฉัน';
+  },{timeout:10000,maximumAge:0,enableHighAccuracy:true});
 }
 
 function openSearch(){document.getElementById('search-modal').style.display='flex';setTimeout(()=>document.getElementById('search-input').focus(),100);doSearch();}
