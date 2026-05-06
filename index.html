@@ -411,7 +411,9 @@ function showOpenInBrowserBanner(){
       <div style="font-size:18px;font-weight:700;color:#f0d080;margin-bottom:8px;">เปิดในเบราว์เซอร์</div>
       <div style="font-size:13px;color:#52b788;margin-bottom:6px;">คุณกำลังเปิดจาก LINE</div>
       <div style="font-size:12px;color:#3a6a3a;margin-bottom:24px;">เพื่อใช้ GPS และแชร์ตำแหน่งได้<br>กรุณาเปิดในเบราว์เซอร์ภายนอก</div>
-      <button onclick="window.open('${window.location.href}','_blank');document.getElementById('browser-modal').remove();" style="width:100%;background:linear-gradient(135deg,#c9a84c,#e8c56a);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;color:#0a1f12;cursor:pointer;font-family:'Sarabun',sans-serif;margin-bottom:10px;">
+      <button onclick="<a href="${window.location.href}" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,#c9a84c,#e8c56a);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;color:#0a1f12;cursor:pointer;font-family:'Sarabun',sans-serif;margin-bottom:10px;text-decoration:none;box-sizing:border-box;">
+  🌐 เปิดในเบราว์เซอร์
+</a>;document.getElementById('browser-modal').remove();" style="width:100%;background:linear-gradient(135deg,#c9a84c,#e8c56a);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;color:#0a1f12;cursor:pointer;font-family:'Sarabun',sans-serif;margin-bottom:10px;">
         🌐 เปิดในเบราว์เซอร์
       </button>
       <button onclick="document.getElementById('browser-modal').remove();" style="width:100%;background:transparent;border:1px solid #2a4a2a;border-radius:12px;padding:12px;font-size:13px;color:#3a6a3a;cursor:pointer;font-family:'Sarabun',sans-serif;">
