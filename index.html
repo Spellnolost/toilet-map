@@ -589,8 +589,7 @@ map.Event.bind('ready', function(){
   if(isLineBrowser())showOpenInBrowserBanner();
   renderAll();
   const s=document.createElement('style');          // เพิ่มบรรทัดนี้
-  s.textContent='.ldmap-button{color:#000!important;}.ldmap-item-active{color:#fff!important;}';
-  document.head.appendChild(s);                     // เพิ่มบรรทัดนี้
+s.textContent='.ldmap-button{color:#000!important;}.ldmap-item-active{color:#fff!important;}.maplibregl-ctrl-top-left,.maplibregl-ctrl-bottom-left{display:none!important;}';  document.head.appendChild(s);                     // เพิ่มบรรทัดนี้
   autoLocate();
 });
 </script>
